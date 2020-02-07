@@ -4,7 +4,7 @@ const ItemManager = ({items, update}) => {
 
     const [message, setMessage] = useState("");
 
-    async function doCheckout(name) {
+    const doCheckout = async (name) => {
         const res = await fetch("http://localhost:8080/checkout", {
             method: 'POST',
             headers: {
@@ -18,7 +18,7 @@ const ItemManager = ({items, update}) => {
             if(res.status === "SUCCESS") update();
             else setMessage(res.response);
         });
-    }
+    };
 
     return (
         <div className="ItemManager">

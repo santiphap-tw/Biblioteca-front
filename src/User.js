@@ -23,14 +23,14 @@ const UserManager = ({profile, update}) => {
 
 const UserProfile = ({profile, update}) => {
 
-    async function doLogout() {
+    const doLogout = async () => {
         const res = await fetch("http://localhost:8080/logout", {
             method: 'POST'
         });
         res.json().then(res => {
             if(res.status === "SUCCESS") update();
         });
-    }
+    };
 
     return (
         <div className="UserProfile">
@@ -55,7 +55,7 @@ const UserLogin = ({update}) => {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
-    async function doLogin() {
+    const doLogin = async () => {
         const res = await fetch("http://localhost:8080/login", {
             method: 'POST',
             headers: {
@@ -70,7 +70,7 @@ const UserLogin = ({update}) => {
             if(res.status === "SUCCESS") update();
             else setMessage(res.response);
         });
-    }
+    };
 
     const handleChange = (event) => {
         if(event.target.id === "inputId") setId(event.target.value);
@@ -113,7 +113,7 @@ const RentedItems = ({items, update}) => {
 
     const [message, setMessage] = useState("");
 
-    async function doReturn(name) {
+    const doReturn = async (name) => {
         const res = await fetch("http://localhost:8080/return", {
             method: 'POST',
             headers: {
@@ -127,7 +127,7 @@ const RentedItems = ({items, update}) => {
             if(res.status === "SUCCESS") update();
             else setMessage(res.response);
         });
-    }
+    };
 
     return (
         <div className="RentedItems">
