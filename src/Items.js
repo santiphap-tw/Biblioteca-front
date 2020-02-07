@@ -4,6 +4,7 @@ const ItemManager = (props) => {
 
     const [items, setItems] = useState({});
     const [status, setStatus] = useState("FAIL");
+    const [message, setMessage] = useState("");
 
     async function fetchItems() {
         const url = "http://localhost:8080/show";
@@ -16,12 +17,31 @@ const ItemManager = (props) => {
         });
     }
 
+    async function doCheckout(name) {
+        const res = await fetch("http://localhost:8080/checkout", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name
+            })
+        });
+        res.json().then(res => {
+            if(res.status === "SUCCESS") {
+                fetchItems();
+            }
+            else setMessage(res.response);
+        });
+    }
+
     useEffect(() => {
         fetchItems();
     }, [status]);
 
     return (
         <div className="ItemManager">
+            {message !== "" && (alert(message) || true) && setMessage("")}
             <table className="table w-auto mx-auto">
                 <thead>
                     <tr>
@@ -45,7 +65,7 @@ const ItemManager = (props) => {
                                     )}
                                 </td>
                                 <td>{item.available ? 
-                                    <button className="btn btn-success">Check out</button> 
+                                    <button className="btn btn-success" onClick={() => doCheckout(item.title)}>Check out</button> 
                                 : ""}</td>
                             </tr>
                         </React.Fragment>
