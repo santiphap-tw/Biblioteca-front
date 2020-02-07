@@ -1,24 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import UserManager from './User.js';
+import ItemManager from './Items.js';
 
-function App() {
+const App = () => {
+  const  [needUpdate, setUpdate] =  useState(true);
+  const  [items, setItems] =  useState({});
+  const  [profile, setProfile] =  useState({});
+
+  const fetchItems = async () => {
+    const res = await fetch("http://localhost:8080/show/all");
+    res.json().then(res => {
+        setItems(res.response);
+    });
+  };
+
+  const fetchProfile = async () => {
+    const res = await fetch("http://localhost:8080/profile");
+    res.json().then(res => {
+        if(res.status === "SUCCESS") setProfile(res.response);
+        else setProfile(null);
+    });
+  };
+
+  useEffect(() => {
+    fetchItems();
+    fetchProfile();
+    setUpdate(false);
+  }, [needUpdate]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <WelcomeMessage />
+      <div className="row">
+        <div className="col">
+          <ItemManager profile={profile} items={items} update={() => setUpdate(true)} />
+        </div>
+        <div className="col">
+          <UserManager profile={profile} update={() => setUpdate(true)} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const WelcomeMessage = () => {
+  const  [response, setResponse] =  useState({});
+
+  const fetchData = async () => {
+    const res = await fetch("http://localhost:8080");
+    res.json().then(res => setResponse(res));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [setResponse]);
+
+  return (
+    <div className="WelcomeMessage">
+      <div className="jumbotron h5 my-3 text-center">
+        {response.response}
+      </div>
     </div>
   );
 }
