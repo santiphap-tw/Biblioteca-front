@@ -26,6 +26,7 @@ const UserManager = () => {
             <div className="my-3">
                 {!isLogin && <UserLogin callback={fetchProfile}/>}
                 {isLogin && <UserProfile value={profile} callback={fetchProfile} />}
+                {isLogin && profile.items && profile.items.length > 0 && <RentedItems value={profile} callback={fetchProfile} />}
             </div>
         </div>
     );
@@ -117,6 +118,47 @@ const UserLogin = (props) => {
                     </form>
                 </div>
             </div>
+        </div>
+    );
+}
+
+const RentedItems = (props) => {
+
+    const items = props.value.items;
+
+    return (
+        <div className="RentedItems">
+            <table className="table w-auto mx-auto my-3">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Information</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.values(items).map(item => 
+                        <React.Fragment key={item.title}>
+                            <tr>
+                                <td>{item.title}</td>
+                                <td>
+                                    {Object.entries(item)
+                                        .filter(([key, value]) => key !== "title" && key !== "available" && key !== "borrower")
+                                        .map(([key, value]) => 
+                                            <React.Fragment key={key}>
+                                                <p className="m-0 small"><i>{key}</i>: {value}</p>
+                                            </React.Fragment>
+                                    )}
+                                </td>
+                                <td>{
+                                        <button className="btn btn-danger">Return</button> 
+                                    }
+                                </td>
+                            </tr>
+                        </React.Fragment>
+                    )}
+                </tbody>
+            </table>
         </div>
     );
 }

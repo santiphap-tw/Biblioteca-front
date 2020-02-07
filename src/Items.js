@@ -16,15 +16,6 @@ const ItemManager = (props) => {
         });
     }
 
-    function itemInfo(item) {
-        var info = "";
-        for(var key in item) {
-            if(key === "title" || key === "available" ||key === "borrower") continue;
-            info += key + ": " + item[key] + "\n";
-        }
-        return info;
-    }
-
     useEffect(() => {
         fetchItems();
     }, [status]);
@@ -54,7 +45,7 @@ const ItemManager = (props) => {
                                     )}
                                 </td>
                                 <td>{item.available ? 
-                                    <button className="btn btn-primary">Check out</button> 
+                                    <button className="btn btn-success">Check out</button> 
                                 : ""}</td>
                             </tr>
                         </React.Fragment>
