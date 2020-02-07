@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const UserManager = (props) => {
+const UserManager = ({needUpdate, update}) => {
     const [isLogin, setLogin] = useState(false);
     const [profile, setProfile] = useState({});
 
@@ -19,27 +19,27 @@ const UserManager = (props) => {
 
     useEffect(() => {
         fetchProfile();
-    }, [props.needUpdate]);
+    }, [needUpdate]);
 
     return (
         <div className="UserManager">
             <div className="my-3">
-                {!isLogin && <UserLogin update={props.update}/>}
-                {isLogin && <UserProfile value={profile} update={props.update} />}
-                {isLogin && profile.items && profile.items.length > 0 && <RentedItems value={profile} update={props.update} />}
+                {!isLogin && <UserLogin update={update}/>}
+                {isLogin && <UserProfile profile={profile} update={update} />}
+                {isLogin && profile.items && profile.items.length > 0 && <RentedItems items={profile.items} update={update} />}
             </div>
         </div>
     );
 }
 
-const UserProfile = (props) => {
+const UserProfile = ({profile, update}) => {
 
     async function doLogout() {
         const res = await fetch("http://localhost:8080/logout", {
             method: 'POST'
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") props.update();
+            if(res.status === "SUCCESS") update();
         });
     }
 
@@ -48,10 +48,10 @@ const UserProfile = (props) => {
             <div className="card mx-auto p-0" style={{ width: 18 + 'rem' }}>
                 <div className="card-body text-left px-3 pt-3 pb-0">
                     <p className="text-center font-weight-bold">Member Info</p>
-                    <p>ID: {props.value.id}</p>
-                    <p>Name: {props.value.name}</p>
-                    <p>Email: {props.value.email}</p>
-                    <p>Phone: {props.value.phone}</p>
+                    <p>ID: {profile.id}</p>
+                    <p>Name: {profile.name}</p>
+                    <p>Email: {profile.email}</p>
+                    <p>Phone: {profile.phone}</p>
                     <p className="text-center">
                         <input type="button" className="btn btn-primary" value="Logout" onClick={doLogout}/>
                     </p>
@@ -61,7 +61,7 @@ const UserProfile = (props) => {
     );
 }
 
-const UserLogin = (props) => {
+const UserLogin = ({update}) => {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -78,7 +78,7 @@ const UserLogin = (props) => {
             })
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") props.update();
+            if(res.status === "SUCCESS") update();
             else setMessage(res.response);
         });
     }
@@ -120,10 +120,9 @@ const UserLogin = (props) => {
     );
 }
 
-const RentedItems = (props) => {
+const RentedItems = ({items, update}) => {
 
     const [message, setMessage] = useState("");
-    const items = props.value.items;
 
     async function doReturn(name) {
         const res = await fetch("http://localhost:8080/return", {
@@ -136,7 +135,7 @@ const RentedItems = (props) => {
             })
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") props.update();
+            if(res.status === "SUCCESS") update();
             else setMessage(res.response);
         });
     }

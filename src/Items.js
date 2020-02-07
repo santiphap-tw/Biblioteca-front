@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 
-const ItemManager = (props) => {
+const ItemManager = ({type, filter, needUpdate, update}) => {
 
     const [items, setItems] = useState({});
     const [message, setMessage] = useState("");
 
     async function fetchItems() {
         const url = "http://localhost:8080/show";
-        const type = props.type !== "all" ? "/" + props.type : "";
-        const filter = props.filter !== "available" ? "/" + props.filter : "";
-        const res = await fetch(url+type+filter);
+        const typeParam = type !== "all" ? "/" + type : "";
+        const filterParam = filter !== "available" ? "/" + filter : "";
+        const res = await fetch(url+typeParam+filterParam);
         res.json().then(res => {
             setItems(res.response);
         });
@@ -28,7 +28,7 @@ const ItemManager = (props) => {
         res.json().then(res => {
             if(res.status === "SUCCESS") {
                 fetchItems();
-                props.update();
+                update();
             }
             else setMessage(res.response);
         });
@@ -36,7 +36,7 @@ const ItemManager = (props) => {
 
     useEffect(() => {
         fetchItems();
-    }, [props.needUpdate]);
+    }, [needUpdate]);
 
     return (
         <div className="ItemManager">
