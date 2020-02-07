@@ -8,7 +8,7 @@ const App = () => {
   const  [profile, setProfile] =  useState({});
 
   const fetchItems = async () => {
-    const res = await fetch("http://localhost:8080/show");
+    const res = await fetch("http://localhost:8080/show/all");
     res.json().then(res => {
         setItems(res.response);
     });
@@ -33,7 +33,7 @@ const App = () => {
       <WelcomeMessage />
       <div className="row">
         <div className="col">
-          <ItemManager items={items} update={() => setUpdate(true)} />
+          <ItemManager profile={profile} items={items} update={() => setUpdate(true)} />
         </div>
         <div className="col">
           <UserManager profile={profile} update={() => setUpdate(true)} />

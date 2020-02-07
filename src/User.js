@@ -5,16 +5,13 @@ const UserManager = ({profile, update}) => {
     return (
         <div className="UserManager">
             <div className="my-3 row">
-                {!profile && <UserLogin update={update}/>}
+                {!profile && 
+                <div className="col">
+                    <UserLogin update={update}/>
+                </div>}
                 {profile && 
                 <div className="col">
                     <UserProfile profile={profile} update={update} />
-                </div>}
-                {profile && 
-                profile.items && 
-                profile.items.length > 0 && 
-                <div className="col">
-                    <RentedItems items={profile.items} update={update} className="col-6"/>
                 </div>}
             </div>
         </div>
@@ -105,64 +102,6 @@ const UserLogin = ({update}) => {
                     </form>
                 </div>
             </div>
-        </div>
-    );
-}
-
-const RentedItems = ({items, update}) => {
-
-    const [message, setMessage] = useState("");
-
-    const doReturn = async (name) => {
-        const res = await fetch("http://localhost:8080/return", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: name
-            })
-        });
-        res.json().then(res => {
-            if(res.status === "SUCCESS") update();
-            else setMessage(res.response);
-        });
-    };
-
-    return (
-        <div className="RentedItems">
-            {message !== "" && (alert(message) || true) && setMessage("")}
-            <table className="table w-auto mx-auto my-3">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Information</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Object.values(items).map(item => 
-                        <React.Fragment key={item.title}>
-                            <tr>
-                                <td>{item.title}</td>
-                                <td>
-                                    {Object.entries(item)
-                                        .filter(([key, value]) => key !== "title" && key !== "available" && key !== "borrower")
-                                        .map(([key, value]) => 
-                                            <React.Fragment key={key}>
-                                                <p className="m-0 small"><i>{key}</i>: {value}</p>
-                                            </React.Fragment>
-                                    )}
-                                </td>
-                                <td>{
-                                        <button className="btn btn-danger" onClick={() => doReturn(item.title)}>Return</button> 
-                                    }
-                                </td>
-                            </tr>
-                        </React.Fragment>
-                    )}
-                </tbody>
-            </table>
         </div>
     );
 }

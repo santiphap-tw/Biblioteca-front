@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 
-const ItemManager = ({items, update}) => {
+const ItemManager = ({profile, items, update}) => {
 
     const [message, setMessage] = useState("");
 
     const doCheckout = async (name) => {
         const res = await fetch("http://localhost:8080/checkout", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name
+            })
+        });
+        res.json().then(res => {
+            if(res.status === "SUCCESS") update();
+            else setMessage(res.response);
+        });
+    };
+
+    const doReturn = async (name) => {
+        const res = await fetch("http://localhost:8080/return", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -45,9 +61,12 @@ const ItemManager = ({items, update}) => {
                                             </React.Fragment>
                                     )}
                                 </td>
+                                {console.log(item.borrower)}
                                 <td>{item.available ? 
                                     <button className="btn btn-success" onClick={() => doCheckout(item.title)}>Check out</button> 
-                                : <button className="btn btn-secondary" disabled="1">Not available</button>}</td>
+                                : profile && profile.id === item.borrower.id ? 
+                                    <button className="btn btn-danger"  onClick={() => doReturn(item.title)}>Return</button>
+                                    : <button className="btn btn-secondary" disabled="1">Not available</button>}</td>
                             </tr>
                         </React.Fragment>
                     )}
