@@ -78,8 +78,8 @@ const UserLogin = (props) => {
             })
         });
         res.json().then(res => {
-            setMessage(res.response);
             if(res.status === "SUCCESS") props.callback();
+            else setMessage(res.response);
         });
     }
 
@@ -90,6 +90,7 @@ const UserLogin = (props) => {
 
     return (
         <div className="UserLogin">
+            {message !== "" && (alert(message) || true) && setMessage("")}
             <div className="card mx-auto p-0" style={{ width: 18 + 'rem' }}>
                 <div className="card-body text-left px-3 pt-3 pb-0">
                     <form>
@@ -112,9 +113,6 @@ const UserLogin = (props) => {
                         <p className="text-center">
                             <input type="button" className="btn btn-primary" value="Login" onClick={doLogin}/>
                         </p>
-                        <p className="text-center">
-                            {message}
-                        </p>
                     </form>
                 </div>
             </div>
@@ -124,10 +122,28 @@ const UserLogin = (props) => {
 
 const RentedItems = (props) => {
 
+    const [message, setMessage] = useState("");
     const items = props.value.items;
+
+    async function doReturn(name) {
+        const res = await fetch("http://localhost:8080/return", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name
+            })
+        });
+        res.json().then(res => {
+            if(res.status === "SUCCESS") props.callback();
+            else setMessage(res.response);
+        });
+    }
 
     return (
         <div className="RentedItems">
+            {message !== "" && (alert(message) || true) && setMessage("")}
             <table className="table w-auto mx-auto my-3">
                 <thead>
                     <tr>
@@ -151,7 +167,7 @@ const RentedItems = (props) => {
                                     )}
                                 </td>
                                 <td>{
-                                        <button className="btn btn-danger">Return</button> 
+                                        <button className="btn btn-danger" onClick={() => doReturn(item.title)}>Return</button> 
                                     }
                                 </td>
                             </tr>
