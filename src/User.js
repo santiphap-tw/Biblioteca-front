@@ -31,14 +31,14 @@ const UserManager = () => {
     );
 }
 
-const UserProfile = (parent) => {
+const UserProfile = (props) => {
 
     async function doLogout() {
         const res = await fetch("http://localhost:8080/logout", {
             method: 'POST'
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") parent.callback();
+            if(res.status === "SUCCESS") props.callback();
         });
     }
 
@@ -47,10 +47,10 @@ const UserProfile = (parent) => {
             <div className="card mx-auto p-0" style={{ width: 18 + 'rem' }}>
                 <div className="card-body text-left px-3 pt-3 pb-0">
                     <p className="text-center font-weight-bold">Member Info</p>
-                    <p>ID: {parent.value.id}</p>
-                    <p>Name: {parent.value.name}</p>
-                    <p>Email: {parent.value.email}</p>
-                    <p>Phone: {parent.value.phone}</p>
+                    <p>ID: {props.value.id}</p>
+                    <p>Name: {props.value.name}</p>
+                    <p>Email: {props.value.email}</p>
+                    <p>Phone: {props.value.phone}</p>
                     <p className="text-center">
                         <input type="button" className="btn btn-primary" value="Logout" onClick={doLogout}/>
                     </p>
@@ -60,7 +60,7 @@ const UserProfile = (parent) => {
     );
 }
 
-const UserLogin = (parent) => {
+const UserLogin = (props) => {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
@@ -78,7 +78,7 @@ const UserLogin = (parent) => {
         });
         res.json().then(res => {
             setMessage(res.response);
-            if(res.status === "SUCCESS") parent.callback();
+            if(res.status === "SUCCESS") props.callback();
         });
     }
 

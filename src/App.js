@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import UserManager from './User.js';
+import ItemManager from './Items.js';
 
 function App() {
   return (
     <div className="App">
       <WelcomeMessage />
-      <UserManager />
+      <div className="row">
+        <div className="col">
+          <ItemManager filter="available" type="all" />
+        </div>
+        <div className="col">
+          <UserManager />
+        </div>
+      </div>
     </div>
   );
 }
