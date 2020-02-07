@@ -61,8 +61,8 @@ const ItemManager = ({profile, items, update}) => {
                                             </React.Fragment>
                                     )}
                                 </td>
-                                <td>{item.available ? 
-                                    <button className="btn btn-success" onClick={() => doCheckout(item.title)}>Check out</button> 
+                                <td>{item.available ? profile ?
+                                    <button className="btn btn-success" onClick={() => doCheckout(item.title)}>Check out</button> : ""
                                 : profile && profile.id === item.borrower.id ? 
                                     <button className="btn btn-danger"  onClick={() => doReturn(item.title)}>Return</button>
                                     : <button className="btn btn-secondary" disabled="1">Not available</button>}</td>
