@@ -61,7 +61,6 @@ const ItemManager = ({profile, items, update}) => {
                                             </React.Fragment>
                                     )}
                                 </td>
-                                {console.log(item.borrower)}
                                 <td>{item.available ? 
                                     <button className="btn btn-success" onClick={() => doCheckout(item.title)}>Check out</button> 
                                 : profile && profile.id === item.borrower.id ? 
