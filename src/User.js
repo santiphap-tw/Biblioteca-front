@@ -1,32 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-const UserManager = ({needUpdate, update}) => {
-    const [isLogin, setLogin] = useState(false);
-    const [profile, setProfile] = useState({});
-
-    async function fetchProfile() {
-        const res = await fetch("http://localhost:8080/profile");
-        res.json().then(res => {
-            if (res.status === "FAIL") {
-                setLogin(false);
-            }
-            else {
-                setLogin(true);
-                setProfile(res.response);
-            }
-        });
-    }
-
-    useEffect(() => {
-        fetchProfile();
-    }, [needUpdate]);
+const UserManager = ({profile, update}) => {
 
     return (
         <div className="UserManager">
-            <div className="my-3">
-                {!isLogin && <UserLogin update={update}/>}
-                {isLogin && <UserProfile profile={profile} update={update} />}
-                {isLogin && profile.items && profile.items.length > 0 && <RentedItems items={profile.items} update={update} />}
+            <div className="my-3 row">
+                {!profile && <UserLogin update={update}/>}
+                {profile && 
+                <div className="col">
+                    <UserProfile profile={profile} update={update} />
+                </div>}
+                {profile && 
+                profile.items && 
+                profile.items.length > 0 && 
+                <div className="col">
+                    <RentedItems items={profile.items} update={update} className="col-6"/>
+                </div>}
             </div>
         </div>
     );
@@ -83,7 +72,7 @@ const UserLogin = ({update}) => {
         });
     }
 
-    function handleChange(event) {
+    const handleChange = (event) => {
         if(event.target.id === "inputId") setId(event.target.value);
         if(event.target.id === "inputPassword") setPassword(event.target.value);
     }

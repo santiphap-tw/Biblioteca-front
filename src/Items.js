@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-const ItemManager = ({type, filter, needUpdate, update}) => {
+const ItemManager = ({items, update}) => {
 
-    const [items, setItems] = useState({});
     const [message, setMessage] = useState("");
-
-    async function fetchItems() {
-        const url = "http://localhost:8080/show";
-        const typeParam = type !== "all" ? "/" + type : "";
-        const filterParam = filter !== "available" ? "/" + filter : "";
-        const res = await fetch(url+typeParam+filterParam);
-        res.json().then(res => {
-            setItems(res.response);
-        });
-    }
 
     async function doCheckout(name) {
         const res = await fetch("http://localhost:8080/checkout", {
@@ -26,17 +15,10 @@ const ItemManager = ({type, filter, needUpdate, update}) => {
             })
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") {
-                fetchItems();
-                update();
-            }
+            if(res.status === "SUCCESS") update();
             else setMessage(res.response);
         });
     }
-
-    useEffect(() => {
-        fetchItems();
-    }, [needUpdate]);
 
     return (
         <div className="ItemManager">
