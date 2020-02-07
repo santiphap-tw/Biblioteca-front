@@ -65,7 +65,7 @@ const ItemManager = (props) => {
                                 </td>
                                 <td>{item.available ? 
                                     <button className="btn btn-success" onClick={() => doCheckout(item.title)}>Check out</button> 
-                                : ""}</td>
+                                : <button className="btn btn-secondary" disabled="1">Not available</button>}</td>
                             </tr>
                         </React.Fragment>
                     )}
