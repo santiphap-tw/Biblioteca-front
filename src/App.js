@@ -3,15 +3,23 @@ import UserManager from './User.js';
 import ItemManager from './Items.js';
 
 function App() {
+  const  [needUpdate, setUpdate] =  useState(true);
+
+  useEffect(() => {
+    console.log("Update!");
+    setUpdate(false);
+  }, [needUpdate]);
+
   return (
     <div className="App">
+      {console.log("update status: " + needUpdate)}
       <WelcomeMessage />
       <div className="row">
         <div className="col">
-          <ItemManager filter="available" type="all" />
+          <ItemManager filter="available" type="all" update={() => setUpdate(true)}  needUpdate={needUpdate} />
         </div>
         <div className="col">
-          <UserManager />
+          <UserManager update={() => setUpdate(true)}  needUpdate={needUpdate} />
         </div>
       </div>
     </div>

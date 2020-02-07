@@ -15,6 +15,7 @@ const ItemManager = (props) => {
             setStatus(res.status);
             setItems(res.response);
         });
+        console.log("update items");
     }
 
     async function doCheckout(name) {
@@ -30,6 +31,7 @@ const ItemManager = (props) => {
         res.json().then(res => {
             if(res.status === "SUCCESS") {
                 fetchItems();
+                props.update();
             }
             else setMessage(res.response);
         });
@@ -37,7 +39,7 @@ const ItemManager = (props) => {
 
     useEffect(() => {
         fetchItems();
-    }, [status]);
+    }, [status, props.needUpdate]);
 
     return (
         <div className="ItemManager">

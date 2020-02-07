@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const UserManager = () => {
+const UserManager = (props) => {
     const [isLogin, setLogin] = useState(false);
     const [profile, setProfile] = useState({});
 
@@ -15,18 +15,19 @@ const UserManager = () => {
                 setProfile(res.response);
             }
         });
+        console.log("update users");
     }
 
     useEffect(() => {
         fetchProfile();
-    }, [isLogin]);
+    }, [isLogin, props.needUpdate]);
 
     return (
         <div className="UserManager">
             <div className="my-3">
-                {!isLogin && <UserLogin callback={fetchProfile}/>}
-                {isLogin && <UserProfile value={profile} callback={fetchProfile} />}
-                {isLogin && profile.items && profile.items.length > 0 && <RentedItems value={profile} callback={fetchProfile} />}
+                {!isLogin && <UserLogin callback={props.update}/>}
+                {isLogin && <UserProfile value={profile} callback={props.update} />}
+                {isLogin && profile.items && profile.items.length > 0 && <RentedItems value={profile} callback={props.update} />}
             </div>
         </div>
     );
