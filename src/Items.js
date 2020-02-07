@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 const ItemManager = (props) => {
 
     const [items, setItems] = useState({});
-    const [status, setStatus] = useState("FAIL");
     const [message, setMessage] = useState("");
 
     async function fetchItems() {
@@ -12,10 +11,8 @@ const ItemManager = (props) => {
         const filter = props.filter !== "available" ? "/" + props.filter : "";
         const res = await fetch(url+type+filter);
         res.json().then(res => {
-            setStatus(res.status);
             setItems(res.response);
         });
-        console.log("update items");
     }
 
     async function doCheckout(name) {
@@ -39,7 +36,7 @@ const ItemManager = (props) => {
 
     useEffect(() => {
         fetchItems();
-    }, [status, props.needUpdate]);
+    }, [props.needUpdate]);
 
     return (
         <div className="ItemManager">

@@ -15,19 +15,18 @@ const UserManager = (props) => {
                 setProfile(res.response);
             }
         });
-        console.log("update users");
     }
 
     useEffect(() => {
         fetchProfile();
-    }, [isLogin, props.needUpdate]);
+    }, [props.needUpdate]);
 
     return (
         <div className="UserManager">
             <div className="my-3">
-                {!isLogin && <UserLogin callback={props.update}/>}
-                {isLogin && <UserProfile value={profile} callback={props.update} />}
-                {isLogin && profile.items && profile.items.length > 0 && <RentedItems value={profile} callback={props.update} />}
+                {!isLogin && <UserLogin update={props.update}/>}
+                {isLogin && <UserProfile value={profile} update={props.update} />}
+                {isLogin && profile.items && profile.items.length > 0 && <RentedItems value={profile} update={props.update} />}
             </div>
         </div>
     );
@@ -40,7 +39,7 @@ const UserProfile = (props) => {
             method: 'POST'
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") props.callback();
+            if(res.status === "SUCCESS") props.update();
         });
     }
 
@@ -79,7 +78,7 @@ const UserLogin = (props) => {
             })
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") props.callback();
+            if(res.status === "SUCCESS") props.update();
             else setMessage(res.response);
         });
     }
@@ -137,7 +136,7 @@ const RentedItems = (props) => {
             })
         });
         res.json().then(res => {
-            if(res.status === "SUCCESS") props.callback();
+            if(res.status === "SUCCESS") props.update();
             else setMessage(res.response);
         });
     }

@@ -6,13 +6,11 @@ function App() {
   const  [needUpdate, setUpdate] =  useState(true);
 
   useEffect(() => {
-    console.log("Update!");
     setUpdate(false);
   }, [needUpdate]);
 
   return (
     <div className="App">
-      {console.log("update status: " + needUpdate)}
       <WelcomeMessage />
       <div className="row">
         <div className="col">
