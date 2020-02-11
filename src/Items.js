@@ -37,7 +37,7 @@ const ItemManagement = ({profile, items, update}) => {
     };
 
     return (
-        <div className="ItemManager">
+        <div className="ItemManagement">
             {message !== "" && (alert(message) || true) && setMessage("")}
             <table className="table w-auto mx-auto">
                 <thead>

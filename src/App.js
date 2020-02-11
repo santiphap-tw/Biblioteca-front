@@ -11,7 +11,7 @@ const App = () => {
     const res = await fetch("http://localhost:8080/show/all");
     res.json().then(res => {
         setItems(res.response);
-    });
+    }).catch(err => {});
   };
 
   const fetchProfile = async () => {
@@ -19,7 +19,7 @@ const App = () => {
     res.json().then(res => {
         if(res.status === "SUCCESS") setProfile(res.response);
         else setProfile(null);
-    });
+    }).catch(err => {});
   };
 
   useEffect(() => {
@@ -48,7 +48,8 @@ const WelcomeMessage = () => {
 
   const fetchData = async () => {
     const res = await fetch("http://localhost:8080");
-    res.json().then(res => setResponse(res));
+    res.json().then(res => setResponse(res))
+    .catch(err => {});
   };
 
   useEffect(() => {

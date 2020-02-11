@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const UserManagement = ({profile, update}) => {
 
     return (
-        <div className="UserManager">
+        <div className="UserManagement">
             <div className="my-3 row">
                 {!profile && 
                 <div className="col">

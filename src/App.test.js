@@ -1,9 +1,16 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import ReactDOM from 'react-dom';
+import { renderHook } from '@testing-library/react-hooks';
 import App from './App';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+it('should have welcome message, item management, user management', async () => {
+
+  const { result } = renderHook(() => App());
+
+  const container = document.createElement('div');
+  ReactDOM.render(result.current, container);
+
+  expect(container.innerHTML).toMatch(/WelcomeMessage/);
+  expect(container.innerHTML).toMatch(/ItemManagement/);
+  expect(container.innerHTML).toMatch(/UserManagement/);
 });
