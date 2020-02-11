@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import UserManager from './User.js';
-import ItemManager from './Items.js';
+import UserManagement from './User.js';
+import ItemManagement from './Items.js';
 
 const App = () => {
   const  [needUpdate, setUpdate] =  useState(true);
@@ -33,10 +33,10 @@ const App = () => {
       <WelcomeMessage />
       <div className="row">
         <div className="col">
-          <ItemManager profile={profile} items={items} update={() => setUpdate(true)} />
+          <ItemManagement profile={profile} items={items} update={() => setUpdate(true)} />
         </div>
         <div className="col">
-          <UserManager profile={profile} update={() => setUpdate(true)} />
+          <UserManagement profile={profile} update={() => setUpdate(true)} />
         </div>
       </div>
     </div>

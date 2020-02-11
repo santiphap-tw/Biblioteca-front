@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ItemManager = ({profile, items, update}) => {
+const ItemManagement = ({profile, items, update}) => {
 
     const [message, setMessage] = useState("");
 
@@ -83,4 +83,4 @@ const ItemManager = ({profile, items, update}) => {
     );
 }
 
-export default ItemManager;
+export default ItemManagement;
