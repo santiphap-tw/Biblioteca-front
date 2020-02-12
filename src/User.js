@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-const UserManager = ({profile, update}) => {
+const UserManagement = ({profile, update}) => {
 
     return (
-        <div className="UserManager">
+        <div className="UserManagement">
             <div className="my-3 row">
                 {!profile && 
                 <div className="col">
@@ -106,4 +106,4 @@ const UserLogin = ({update}) => {
     );
 }
 
-export default UserManager;
+export default UserManagement;

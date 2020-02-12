@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import UserManager from './User.js';
-import ItemManager from './Items.js';
+import UserManagement from './User.js';
+import ItemManagement from './Items.js';
 
 const App = () => {
   const  [needUpdate, setUpdate] =  useState(true);
@@ -11,7 +11,7 @@ const App = () => {
     const res = await fetch("http://localhost:8080/show/all");
     res.json().then(res => {
         setItems(res.response);
-    });
+    }).catch(err => {});
   };
 
   const fetchProfile = async () => {
@@ -19,7 +19,7 @@ const App = () => {
     res.json().then(res => {
         if(res.status === "SUCCESS") setProfile(res.response);
         else setProfile(null);
-    });
+    }).catch(err => {});
   };
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const App = () => {
       <WelcomeMessage />
       <div className="row">
         <div className="col">
-          <ItemManager profile={profile} items={items} update={() => setUpdate(true)} />
+          <ItemManagement profile={profile} items={items} update={() => setUpdate(true)} />
         </div>
         <div className="col">
-          <UserManager profile={profile} update={() => setUpdate(true)} />
+          <UserManagement profile={profile} update={() => setUpdate(true)} />
         </div>
       </div>
     </div>
@@ -48,7 +48,8 @@ const WelcomeMessage = () => {
 
   const fetchData = async () => {
     const res = await fetch("http://localhost:8080");
-    res.json().then(res => setResponse(res));
+    res.json().then(res => setResponse(res))
+    .catch(err => {});
   };
 
   useEffect(() => {

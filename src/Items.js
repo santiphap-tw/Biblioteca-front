@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ItemManager = ({profile, items, update}) => {
+const ItemManagement = ({profile, items, update}) => {
 
     const [message, setMessage] = useState("");
 
@@ -37,7 +37,7 @@ const ItemManager = ({profile, items, update}) => {
     };
 
     return (
-        <div className="ItemManager">
+        <div className="ItemManagement">
             {message !== "" && (alert(message) || true) && setMessage("")}
             <table className="table w-auto mx-auto">
                 <thead>
@@ -48,7 +48,15 @@ const ItemManager = ({profile, items, update}) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.values(items).map(item => 
+                    {Object.values(items).sort((item_a,item_b) => {
+                        if(item_a.available && !item_b.available) return -1;
+                        if(!item_a.available && item_b.available) return 1;
+                        if(profile && item_a.borrower && item_b.borrower){
+                            if(item_a.borrower.id === profile.id && item_b.borrower.id !== profile.id) return -1;
+                            if(item_a.borrower.id !== profile.id && item_b.borrower.id === profile.id) return 1;
+                        }
+                        return 0;
+                    }).map(item => 
                         <React.Fragment key={item.title}>
                             <tr>
                                 <td>{item.title}</td>
@@ -75,4 +83,4 @@ const ItemManager = ({profile, items, update}) => {
     );
 }
 
-export default ItemManager;
+export default ItemManagement;
